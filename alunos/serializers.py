@@ -24,4 +24,13 @@ class AlunoSerializer(serializers.ModelSerializer):
             'altura'
         )
 
-class
+class MatriculaSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Matricula
+        fields = (
+            'id',
+            'aluno',
+            'plano',
+            'forma_pagamento',
+        )
