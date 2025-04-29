@@ -1,13 +1,13 @@
 from django.contrib import admin
 
-from alunos.models import Aluno, Matricula
+from .models import Aluno, Matricula
 
 
 @admin.register(Aluno)
 class AlunoAdmin(admin.ModelAdmin):
-    list_display = ('id', 'nome', 'status', 'criacao', 'atualizacao')
+    list_display = ('id', 'nome', 'ativo', 'criacao', 'atualizacao')
 
 
 @admin.register(Matricula)
 class MatriculaAdmin(admin.ModelAdmin):
-    list_display = ('aluno', 'plano', 'status', 'criacao', 'atualizacao')
+    list_display = ('aluno', 'plano', 'ativo', 'criacao', 'atualizacao')

@@ -1,3 +1,7 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import Exercicio
+
+@admin.register(Exercicio)
+class ExercicioAdmin(admin.ModelAdmin):
+    list_display = ('nome', 'categoria', 'equipamento', 'atualizacao', 'criacao', 'ativo')
