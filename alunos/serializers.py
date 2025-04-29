@@ -23,3 +23,5 @@ class AlunoSerializer(serializers.ModelSerializer):
             'peso',
             'altura'
         )
+
+class
