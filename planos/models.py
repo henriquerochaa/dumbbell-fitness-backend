@@ -7,6 +7,7 @@ class Categoria(models.TextChoices):
     """
     MUSCULACAO = 'M', 'Musculação'
     DANCA = 'D', 'Dança'
+    GINASTICA = 'G', 'Ginástica'
 
 
 class Plano(Base):
