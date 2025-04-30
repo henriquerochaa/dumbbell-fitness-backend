@@ -10,7 +10,7 @@ class PlanoAdmin(admin.ModelAdmin):
 
 @admin.register(Modalidade)
 class ModalidadeAdmin(admin.ModelAdmin):
-    list_display = ('id', 'nome', 'categoria', 'criacao', 'atualizacao', 'ativo')
+    list_display = ('id', 'categoria', 'criacao', 'atualizacao', 'ativo')
 
 
 @admin.register(PlanoModalidade)

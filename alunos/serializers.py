@@ -20,7 +20,6 @@ class AlunoSerializer(serializers.ModelSerializer):
             'estado',
             'municipio',
             'endereco',
-            'status',
             'peso',
             'altura'
         )

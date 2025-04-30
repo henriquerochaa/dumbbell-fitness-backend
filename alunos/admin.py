@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Aluno, Matricula
+from .models import Aluno, Matricula, Estado, Municipio, CartaoCredito
 
 
 @admin.register(Aluno)
@@ -11,3 +11,16 @@ class AlunoAdmin(admin.ModelAdmin):
 @admin.register(Matricula)
 class MatriculaAdmin(admin.ModelAdmin):
     list_display = ('aluno', 'plano', 'ativo', 'criacao', 'atualizacao')
+
+
+@admin.register(Estado)
+class EstadoAdmin(admin.ModelAdmin):
+    list_display = ('nome', 'sigla', 'criacao', 'atualizacao', 'ativo')
+
+@admin.register(Municipio)
+class MunicipioAdmin(admin.ModelAdmin):
+    list_display = ('nome', 'estado', 'criacao', 'atualizacao', 'ativo')
+
+@admin.register(CartaoCredito)
+class CartaoCreditoAdmin(admin.ModelAdmin):
+    list_display = ('aluno', 'nome_titular', 'data_validade', 'bandeira_cartao', 'criacao', 'atualizacao', 'ativo')

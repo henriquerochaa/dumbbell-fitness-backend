@@ -19,10 +19,11 @@ class ModalidadeSerializer(serializers.ModelSerializer):
         model = Modalidade
         fields = (
             'id',
-            'nome',
             'categoria'
         )
 
 class PlanoModalidadeSerializer(serializers.ModelSerializer):
-    plano = PlanoSerializer()
-    modalidade = ModalidadeSerializer()
+
+    class Meta:
+        plano = PlanoSerializer()
+        modalidade = ModalidadeSerializer()
