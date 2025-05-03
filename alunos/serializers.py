@@ -1,12 +1,16 @@
 from rest_framework import serializers
 from .models import Aluno, Matricula, CartaoCredito
 
-
 class AlunoSerializer(serializers.ModelSerializer):
     """
     Serializador para o modelo Aluno. Converte os dados do aluno para JSON e define campos como 'cpf' e 'email'
     como somente para escrita.
     """
+
+    data_nascimento = serializers.DateField(
+        format="%d/%m/%Y",  # Formato de saída
+        input_formats=["%d/%m/%Y"],  # Formato de entrada
+    )
 
     class Meta:
         model = Aluno
