@@ -19,6 +19,7 @@ class ModalidadeSerializer(serializers.ModelSerializer):
         model = Modalidade
         fields = (
             'id',
+            'nome',
             'categoria'
         )
 

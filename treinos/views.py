@@ -1,20 +1,13 @@
-from rest_framework import generics
+from rest_framework import viewsets
 
 from .models import Treino
 from .serializers import TreinoSerializer
 
 
-class TreinoListCreateView(generics.ListCreateAPIView):
+class TreinoViewSet(viewsets.ModelViewSet):
     """
-    Cria e lista os dados do treino
+    Cria, Lista, Atualiza, Deleta os dados do treino
     """
-    queryset = Treino.objects.all()
-    serializer_class = TreinoSerializer
 
-
-class TreinoRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
-    """
-    Atualiza e deleta os dados do treino
-    """
     queryset = Treino.objects.all()
     serializer_class = TreinoSerializer

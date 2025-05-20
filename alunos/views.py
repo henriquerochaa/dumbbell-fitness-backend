@@ -1,38 +1,33 @@
 from rest_framework import generics
 
+from rest_framework import viewsets
+from rest_framework.response import Response
+
 from .models import Aluno, Matricula
 from .serializers import AlunoSerializer, MatriculaSerializer
 
 
-class AlunoListCreateView(generics.ListCreateAPIView):
+class AlunoViewSet(viewsets.ModelViewSet):
     """
-    Cria e lista os dados do aluno
-    """
-    queryset = Aluno.objects.all()
-    serializer_class = AlunoSerializer
-
-
-class AlunoRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
-    """
-    Atualiza e deleta os dados do aluno
+    Cria, Lista, Atualiza e delte os dados do aluno
     """
     queryset = Aluno.objects.all()
     serializer_class = AlunoSerializer
 
-
-class MatriculaListCreateView(generics.ListCreateAPIView):
-    """
-    Cria e lista as matriculas
-    """
-    queryset = Matricula.objects.all()
-    serializer_class = MatriculaSerializer
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
 
 
-class MatriculaRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+class MatriculaViewSet(viewsets.ModelViewSet):
     """
-    Atualiza e deleta os matriculas
+    Cria, Lista, Atualiza e delte os dados do aluno
     """
     queryset = Matricula.objects.all()
     serializer_class = MatriculaSerializer
 
-
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)

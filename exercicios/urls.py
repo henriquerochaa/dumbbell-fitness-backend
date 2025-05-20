@@ -1,8 +1,9 @@
 from django.urls import path
+from rest_framework.routers import DefaultRouter
 
-from .views import ExercicioListCreateView, ExercicioRetrieveUpdateDestroyView
+from .views import ExercicioViewSet
 
-urlpatterns = [
-    path('', ExercicioListCreateView.as_view(), name='exercicios'),
-    path('<int:pk>/', ExercicioRetrieveUpdateDestroyView.as_view(), name='exercicio'),
-]
+router = DefaultRouter()
+router.register('exercicios', ExercicioViewSet)
+
+urlpatterns = router.urls

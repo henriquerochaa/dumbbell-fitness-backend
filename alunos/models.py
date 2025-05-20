@@ -18,6 +18,7 @@ class FormaPagamento(models.TextChoices):
     """
     CARTAO_CREDITO = 'C', 'Cartão de Crédito'
     PIX = 'P', 'PIX'
+    DEBITO = 'D', 'Débito'
 
 
 class Estado(Base):
@@ -99,7 +100,8 @@ class Matricula(Base):
     aluno = models.ForeignKey(Aluno, on_delete=models.CASCADE, verbose_name="Aluno")
     plano = models.ForeignKey(Plano, on_delete=models.PROTECT, verbose_name="Plano")
     forma_pagamento = models.CharField("Forma de Pagamento", max_length=1, choices=FormaPagamento.choices)
-    cartao_credito = models.ForeignKey(CartaoCredito, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="Cartão de Crédito")
+    cartao_credito = models.ForeignKey(CartaoCredito, on_delete=models.SET_NULL, null=True, blank=True,
+                                       verbose_name="Cartão de Crédito")
 
     class Meta:
         """

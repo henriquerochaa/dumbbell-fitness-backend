@@ -1,5 +1,7 @@
 from rest_framework import serializers
 from .models import Aluno, Matricula, CartaoCredito
+from planos.serializers import PlanoSerializer
+
 
 class AlunoSerializer(serializers.ModelSerializer):
     """
@@ -14,19 +16,8 @@ class AlunoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Aluno
-        fields = (
-            'id',
-            'nome',
-            'cpf',
-            'email',
-            'sexo',
-            'data_nascimento',
-            'estado',
-            'municipio',
-            'endereco',
-            'peso',
-            'altura'
-        )
+        fields = ['id', 'nome', 'cpf', 'email', 'sexo', 'data_nascimento', 'estado',
+                  'municipio', 'endereco', 'peso', 'altura']
         extra_kwargs = {
             'email': {'write_only': True},
             'cpf': {'write_only': True}
@@ -38,20 +29,27 @@ class MatriculaSerializer(serializers.ModelSerializer):
     Serializador para o modelo Matricula. Converte dados da matrícula, incluindo informações do aluno, plano,
     forma de pagamento e cartão de crédito.
     """
-    aluno = AlunoSerializer(read_only=True)
-    aluno_id = serializers.PrimaryKeyRelatedField(queryset=Aluno.objects.all(), write_only=True, source='aluno')
-    cartao_credito_id = serializers.PrimaryKeyRelatedField(queryset=CartaoCredito.objects.all(), write_only=True,
-                                                           required=False, source='cartao_credito')
-    forma_pagamento_display = serializers.CharField(source='get_forma_pagamento_display', read_only=True)
+    metodos_pagamento_disponiveis = serializers.SerializerMethodField()
 
     class Meta:
         model = Matricula
-        fields = (
+        fields = [
             'id',
-            'aluno',
-            'aluno_id',
             'plano',
+            'aluno',
             'forma_pagamento',
-            'forma_pagamento_display',
-            'cartao_credito_id',
-        )
+            'cartao_credito',
+            'metodos_pagamento_disponiveis',
+        ]
+        extra_kwargs = {
+            'cartao_credito': {'required': False}
+        }
+
+    def get_metodos_pagamento_disponiveis(self, obj):
+        if 'dumbbell' in obj.plano.nome.lower():
+            return [{'value': 'C', 'label': 'Cartão de Crédito'}]
+        return [
+            {'value': 'C', 'label': 'Cartão de Crédito'},
+            {'value': 'P', 'label': 'PIX'},
+            {'value': 'D', 'label': 'Débito'}
+        ]

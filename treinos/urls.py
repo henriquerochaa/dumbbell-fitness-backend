@@ -1,8 +1,9 @@
 from django.urls import path
+from rest_framework.routers import DefaultRouter
 
-from .views import TreinoListCreateView, TreinoRetrieveUpdateDestroyView
+from .views import TreinoViewSet
 
-urlpatterns = [
-    path('', TreinoListCreateView.as_view(), name='treinos'),
-    path('<int:pk>/', TreinoRetrieveUpdateDestroyView.as_view(), name='treino'),
-]
+router = DefaultRouter()
+router.register('treino', TreinoViewSet)
+
+urlpatterns = router.urls
