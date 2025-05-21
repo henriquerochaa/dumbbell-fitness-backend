@@ -25,7 +25,6 @@ class Modalidade(Base):
     """
     Modelo de dados para a modalidade.
     """
-    nome = models.CharField('Nome', max_length=255, default='')
     categoria = models.CharField('Categoria', max_length=255, choices=Categoria.choices)
 
     def __str__(self):
