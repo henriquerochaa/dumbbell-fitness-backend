@@ -1,0 +1,66 @@
+# Bytecode do Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Ambiente virtual
+venv/
+.env/
+*.env
+
+# Arquivos de banco de dados local
+*.sqlite3
+
+# Arquivos de configurações locais
+*.local
+*.log
+
+# IDEs
+.vscode/
+.idea/
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# Arquivos de build estático
+staticfiles/
+media/
+static/
+
+# WhiteNoise
+.whitenoise*
+
+# Gunicorn logs (se tiver)
+gunicorn.log
+
+# Render
+build/
+render.yaml
+
+# PyCharm
+*.iml
+*.ipr
+*.iws
+
+# pip
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Testes
+coverage.xml
+htmlcov/
+.tox/
+.nox/
+.pytest_cache/
+
+# Migrations (opcional ignorar se quiser versionar)
+*/migrations/*.py
+*/migrations/__pycache__/
+
+# Cache de pacotes
+.eggs/
+*.egg
+*.egg-info/
+dist/
+build/
