@@ -7,7 +7,7 @@ load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-g-om(h%!-%4+=+n^dbqo-jz#*v_)ff(3_$plge49*=b9g+@+2x')
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
@@ -62,7 +62,7 @@ WSGI_APPLICATION = 'dumbbell.wsgi.application'
 
 DATABASES = {
     'default': dj_database_url.config(
-        default=os.getenv('DATABASE_URL', 'postgres://dumbbell_fitness_jmxq_user:mYw5Fqp3lXyPS42cnmVz8HGuwerpoGVw@dpg-d0p3mnmmcj7s73doqv1g-a.oregon-postgres.render.com:5432/dumbbell_fitness_jmxq'),
+        default=os.getenv('DATABASE_URL'),
         conn_max_age=600,
         ssl_require=True,
     )
