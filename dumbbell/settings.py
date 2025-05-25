@@ -1,16 +1,17 @@
 import os
 from pathlib import Path
+from dotenv import load_dotenv
 import dj_database_url
+
+load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Chave secreta — puxa do ambiente, fallback só pra dev local
 SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-g-om(h%!-%4+=+n^dbqo-jz#*v_)ff(3_$plge49*=b9g+@+2x')
 
-# DEBUG em booleano — pega do ambiente, padrão False
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = ['*']  # Pra produção, ideal limitar!
+ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -19,11 +20,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
     'django_filters',
     'rest_framework',
     'rest_framework.authtoken',
-
     'base',
     'cadastros',
     'exercicios',
@@ -33,7 +32,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # WhiteNoise para static
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -61,11 +60,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'dumbbell.wsgi.application'
 
-# Banco de dados: pega da variável DATABASE_URL, ou fallback hardcoded (mas só local)
 DATABASES = {
     'default': dj_database_url.config(
-        default=os.getenv('DATABASE_URL',
-                          'postgres://dumbbell_fitness_jmxq_user:mYw5Fqp3lXyPS42cnmVz8HGuwerpoGVw@dpg-d0p3mnmmcj7s73doqv1g-a.oregon-postgres.render.com:5432/dumbbell_fitness_jmxq'),
+        default=os.getenv('DATABASE_URL', 'postgres://dumbbell_fitness_jmxq_user:mYw5Fqp3lXyPS42cnmVz8HGuwerpoGVw@dpg-d0p3mnmmcj7s73doqv1g-a.oregon-postgres.render.com:5432/dumbbell_fitness_jmxq'),
         conn_max_age=600,
         ssl_require=True,
     )
@@ -96,7 +93,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
-        # 'rest_framework.authentication.SessionAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
