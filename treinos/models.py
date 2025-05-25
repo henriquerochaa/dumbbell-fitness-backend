@@ -1,6 +1,6 @@
 from django.db import models
 from base.models import Base
-from alunos.models import Aluno
+from cadastros.models import Aluno
 from exercicios.models import Exercicio
 
 
@@ -22,7 +22,7 @@ class Treino(Base):
     aluno = models.ForeignKey(Aluno, on_delete=models.CASCADE, verbose_name='Aluno')
     objetivo = models.CharField("Objetivo", max_length=1, choices=Objetivos.choices)
     disponibilidade = models.CharField("Disponibilidade", max_length=1)
-    observacao = models.TextField("Observações")
+    observacao = models.TextField("Observações", blank=True)
 
     @property
     def peso(self):
@@ -35,7 +35,7 @@ class Treino(Base):
 
 class ExercicioTreino(Base):
     treino = models.ForeignKey(Treino, on_delete=models.CASCADE, related_name='exercicios')
-    exercicio = models.ForeignKey(Exercicio, on_delete=models.PROTECT, default=None)
+    exercicio = models.ForeignKey(Exercicio, on_delete=models.PROTECT)
     series = models.PositiveIntegerField(verbose_name="Número de séries", default=None)
     repeticoes = models.PositiveIntegerField(verbose_name="Número de repetições", default=None)
     carga = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)

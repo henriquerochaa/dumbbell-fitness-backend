@@ -1,6 +1,7 @@
 from django.db import models
 from base.models import Base
 
+
 class Categoria(models.TextChoices):
     """
     Categorias disponíveis para modalidades.

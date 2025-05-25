@@ -9,5 +9,5 @@ class ExercicioViewSet(viewsets.ModelViewSet):
     Cria, Lista, Atualiza e Deleta os dados de exercicio
     """
 
-    queryset = Exercicio.objects.all()
+    queryset = Exercicio.objects.all().order_by('id')
     serializer_class = ExercicioSerializer

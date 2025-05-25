@@ -8,7 +8,7 @@ class PlanoViewSet(viewsets.ModelViewSet):
     """
     Cria, Lista, Atualiza e Deleta os dados de plano
     """
-    queryset = Plano.objects.all()
+    queryset = Plano.objects.all().order_by('id')
     serializer_class = PlanoSerializer
 
 
@@ -16,13 +16,13 @@ class ModalidadeViewSet(viewsets.ModelViewSet):
     """
     Cria, Lista, Atualiza e Deleta os dados de modalidade
     """
-    queryset = Modalidade.objects.all()
+    queryset = Modalidade.objects.all().order_by('id')
     serializer_class = ModalidadeSerializer
 
 class PlanoModalidadeViewSet(viewsets.ModelViewSet):
     """
     Cria, Lista, Atualiza e Deleta os dados de plano/modalidade
     """
-    queryset = PlanoModalidade.objects.all()
+    queryset = PlanoModalidade.objects.all().order_by('id')
     serializer_class = PlanoModalidadeSerializer
 
