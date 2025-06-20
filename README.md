@@ -99,7 +99,7 @@ API REST para gerenciar planos, alunos, exercícios e treinos de uma academia fi
     else:
     print("Falha ao obter token:", response.status_code, response.text)
 
-````
+    ```
 
 ## Exemplo de POST para Criar um Treino
 
@@ -144,4 +144,5 @@ API REST para gerenciar planos, alunos, exercícios e treinos de uma academia fi
     print("Resposta:", response.json())
     else:
     print("Erro ao criar recurso:", response.status_code, response.text)
-````
+
+    ```
