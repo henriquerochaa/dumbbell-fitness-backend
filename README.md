@@ -69,74 +69,79 @@ API REST para gerenciar planos, alunos, exercícios e treinos de uma academia fi
 
     Body JSON:
 
-{
-"username": "seu_usuario",
-"password": "sua_senha"
-}
-
-Resposta sucesso (HTTP 200):
-
     {
-      "token": "seu_token_de_acesso_aqui"
+    "username": "seu_usuario",
+    "password": "sua_senha"
     }
 
-Exemplo para obter token usando Python requests
+### Resposta sucesso (HTTP 200):
 
-import requests
+    {
+      "token": "seu_token_de_acesso_aqui"a
+    }
 
-url = "http://localhost:8000/api-token-auth/"
-data = {
-"username": "seu_usuario",
-"password": "sua_senha"
-}
+## Exemplo para obter token usando Python requests
 
-response = requests.post(url, json=data)
+    ```python
+    import requests
 
-if response.status_code == 200:
-token = response.json().get("token")
-print("Token recebido:", token)
-else:
-print("Falha ao obter token:", response.status_code, response.text)
+    url = "http://localhost:8000/api-token-auth/"
+    data = {
+    "username": "seu_usuario",
+    "password": "sua_senha"
+    }
 
-Exemplo de POST para Criar um Treino
+    response = requests.post(url, json=data)
 
-import requests
+    if response.status_code == 200:
+    token = response.json().get("token")
+    print("Token recebido:", token)
+    else:
+    print("Falha ao obter token:", response.status_code, response.text)
 
-url = "http://localhost:8000/api/v1/treinos/"
+````
 
-data = {
-"objetivo": "A", # substitua conforme seu plano
-"disponibilidade": "B",
-"observacao": "Treino focado em força",
-"exercicios": [
-{
-"exercicio": 1, # ID do exercício existente
-"series": 3,
-"repeticoes": 12,
-"carga": 50.0,
-"descanso": 90
-},
-{
-"exercicio": 2,
-"series": 4,
-"repeticoes": 10,
-"carga": 40.0,
-"descanso": 60
-}
-]
-}
+## Exemplo de POST para Criar um Treino
 
-token = "seu_token_de_acesso_aqui"
+    ```python
+    import requests
 
-headers = {
-"Authorization": f"Token {token}",
-"Content-Type": "application/json"
-}
+    url = "http://localhost:8000/api/v1/treinos/"
 
-response = requests.post(url, json=data, headers=headers)
+    data = {
+    "objetivo": "A", # substitua conforme seu plano
+    "disponibilidade": "B",
+    "observacao": "Treino focado em força",
+    "exercicios": [
+    {
+    "exercicio": 1, # ID do exercício existente
+    "series": 3,
+    "repeticoes": 12,
+    "carga": 50.0,
+    "descanso": 90
+    },
+    {
+    "exercicio": 2,
+    "series": 4,
+    "repeticoes": 10,
+    "carga": 40.0,
+    "descanso": 60
+    }
+    ]
+    }
 
-if response.status_code == 201:
-print("Recurso criado com sucesso!")
-print("Resposta:", response.json())
-else:
-print("Erro ao criar recurso:", response.status_code, response.text)
+    token = "seu_token_de_acesso_aqui"
+
+    headers = {
+    "Authorization": f"Token {token}",
+    "Content-Type": "application/json"
+    }
+
+    response = requests.post(url, json=data, headers=headers)
+
+    if response.status_code == 201:
+    print("Recurso criado com sucesso!")
+    print("Resposta:", response.json())
+    else:
+    print("Erro ao criar recurso:", response.status_code, response.text)
+````
