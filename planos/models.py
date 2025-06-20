@@ -1,6 +1,9 @@
 # Imports do Django
 from django.db import models
 
+# Import para utilização do tipo ArrayField
+from django.contrib.postgres.fields import ArrayField
+
 # Import de models
 from core.models import BaseModel
 
@@ -17,6 +20,12 @@ class Plano(BaseModel):
 
     nome = models.CharField('Nome', max_length=255)
     valor = models.DecimalField('Valor', max_digits=8, decimal_places=2)
+    beneficios = ArrayField(
+        models.CharField(max_length=255),
+        verbose_name='Benefícios',
+        help_text='Lista de benefícios oferecidos pelo plano',
+        default=[]
+    )
 
     def __str__(self):
         return self.nome

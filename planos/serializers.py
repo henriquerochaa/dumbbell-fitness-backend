@@ -7,24 +7,25 @@ from .models import Plano, Modalidade, PlanoModalidade
 
 class PlanoSerializer(serializers.ModelSerializer):
     """
-    Serializer para o modelo Plano.
+    Serializador para o modelo Plano.
 
-    Expõe os campos id, nome e valor do plano.
+    Converte os dados do plano para JSON, incluindo nome, valor e benefícios listados.
     """
     class Meta:
         model = Plano
         fields = (
             'id',
             'nome',
-            'valor'
+            'valor',
+            'beneficios'  # Campo ArrayField adicionado para exibir os benefícios
         )
 
 
 class ModalidadeSerializer(serializers.ModelSerializer):
     """
-    Serializer para o modelo Modalidade.
+    Serializador para o modelo Modalidade.
 
-    Expõe os campos id e categoria da modalidade.
+    Expõe a categoria da modalidade para visualização e manipulação via API.
     """
     class Meta:
         model = Modalidade
@@ -36,13 +37,13 @@ class ModalidadeSerializer(serializers.ModelSerializer):
 
 class PlanoModalidadeSerializer(serializers.ModelSerializer):
     """
-    Serializer para o modelo PlanoModalidade.
+    Serializador para o modelo PlanoModalidade.
 
-    Serializa as relações entre plano e modalidade,  
-    incluindo os serializers aninhados de Plano e Modalidade.
+    Representa a associação entre um plano e uma modalidade específica.
+    Inclui serializadores aninhados para mostrar os dados completos de cada relação.
     """
-    plano = PlanoSerializer()
-    modalidade = ModalidadeSerializer()
+    plano = PlanoSerializer(read_only=True)
+    modalidade = ModalidadeSerializer(read_only=True)
 
     class Meta:
         model = PlanoModalidade

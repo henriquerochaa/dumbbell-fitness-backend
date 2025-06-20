@@ -9,7 +9,15 @@ from planos.models import Plano, Modalidade, PlanoModalidade
 @admin.register(Plano)
 class PlanoAdmin(admin.ModelAdmin):
     # Campos exibidos na lista de registros do admin para facilitar a visualização
-    list_display = ('id', 'nome', 'valor', 'criacao', 'atualizacao', 'ativo')
+    list_display = ('id', 'nome', 'valor', 'mostrar_beneficios',
+                    'criacao', 'atualizacao', 'ativo')
+
+    def mostrar_beneficios(self, obj):
+        """
+        Exibe os benefícios do plano em formato de lista separada por vírgula.
+        """
+        return ', '.join(obj.beneficios)
+    mostrar_beneficios.short_description = 'Benefícios'
 
 
 # Registra o modelo Modalidade no admin com configuração personalizada
