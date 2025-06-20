@@ -12,7 +12,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # Debug modo: True ou False conforme a variável .env (padrão True se não setada)
-DEBUG = os.getenv('DEBUG', 'True') == 'True'
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 # Hosts permitidos — aqui tá liberado geral com '*', cuidado em produção!
 ALLOWED_HOSTS = ['*']
