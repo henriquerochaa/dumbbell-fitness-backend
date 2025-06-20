@@ -1,84 +1,53 @@
+# Imports Django
 from django.db import models
-from planos.models import Plano
-from base.models import Base
 from django.contrib.auth.models import User
 
+# Imports DRF
 from rest_framework.authtoken.models import Token
-from django.db.models.signals import post_save
-from django.dispatch import receiver
+
+# Imports de models
+from planos.models import Plano
+from core.models import BaseModel, EnderecoModel
+
+# Imports de choices
+from core.choices import FORMA_PAGAMENTO, BANDEIRA_CARTAO, SEXO_USUARIO
+
+# Imports de validators
+from core.validators import (cpf_validator, validate_numero_cartao,
+                             validate_cvv, validate_data_validade)
 
 
-class Sexo(models.TextChoices):
+class Aluno(BaseModel):
     """
-    Lista de Sexos
+    Representa um aluno matriculado na academia.
+
+    Campos:
+        - user: vínculo com o usuário de autenticação do Django.
+        - nome: nome completo do aluno.
+        - cpf: CPF único do aluno.
+        - email: e-mail de contato do aluno.
+        - sexo: gênero do aluno (usando choices).
+        - data_nascimento: data de nascimento do aluno.
+        - endereco: endereço vinculado ao aluno.
+        - peso: peso atual do aluno (em kg).
+        - altura: altura do aluno (em metros).
     """
-    MASCULINO = 'M', 'Masculino'
-    FEMININO = 'F', 'Feminino'
-    OUTRO = 'O', 'Outro'
-
-
-class FormaPagamento(models.TextChoices):
-    """
-    Lista de Forma Pagamento
-    """
-    CARTAO_CREDITO = 'C', 'Cartão de Crédito'
-    PIX = 'P', 'PIX'
-    DEBITO = 'D', 'Débito'
-
-
-class BandeiraCartao(models.TextChoices):
-    """
-    Lista de Bandeiras do Cartao
-    """
-
-    MASTECARD = 'M', 'Mastecard'
-    VISA = 'V', 'Visa'
-    ELO = 'E', 'Elo'
-
-
-class Estado(models.TextChoices):
-    """
-    Modelos de dados para Estado
-    """
-    SANTA_CATARINA = 'SC', 'Santa Catarina'
-    MINAS_GERAIS = 'MG', 'Minas Gerais'
-    RIO_JANEIRO = 'RJ', 'Rio de Janeiro'
-    PARANA = 'PR', 'Paraná'
-    SAO_PAULO = 'SP', 'São Paulo'
-    GOIANIA = 'GO', 'Goiânia'
-    DISTRITO_FEDERAL = 'DF', 'Distrito Federal'
-
-
-
-class Municipio(Base):
-    """
-    Modelos de dados para Municipio
-    """
-    nome = models.CharField('Nome do Município', max_length=100)
-    estado = models.CharField("Estado", max_length=40, choices=Estado.choices)
-
-    def __str__(self):
-        return f"{self.nome}"
-
-
-class Aluno(Base):
-    """
-    Modelo de dados para Aluno
-    """
-    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True, related_name='aluno')
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE, null=True, blank=True, related_name='aluno')
     nome = models.CharField('Nome completo', max_length=255)
-    cpf = models.CharField("CPF", max_length=14, unique=True)
+    cpf = models.CharField("CPF", max_length=14,
+                           unique=True, validators=[cpf_validator])
     email = models.EmailField("E-mail", max_length=150)
-    sexo = models.CharField("Sexo", max_length=1, choices=Sexo.choices)
+    sexo = models.CharField("Sexo", max_length=1, choices=SEXO_USUARIO)
     data_nascimento = models.DateField("Data de Nascimento")
-    municipio = models.ForeignKey(Municipio, on_delete=models.PROTECT, verbose_name="Município de residência")
-    endereco = models.CharField("Endereço", max_length=255)
+    endereco = models.ForeignKey(
+        EnderecoModel, on_delete=models.CASCADE, null=False, blank=False, related_name="alunos")
     peso = models.DecimalField("Peso (kg)", max_digits=5, decimal_places=2)
     altura = models.DecimalField("Altura (m)", max_digits=4, decimal_places=2)
 
     class Meta:
         """
-        Verbose name para o campo aluno
+        Configurações de meta para o modelo Aluno.
         """
         db_table = 'aluno'
         verbose_name = 'Aluno'
@@ -88,20 +57,32 @@ class Aluno(Base):
         return self.nome
 
 
-class Cartao(Base):
+class Cartao(BaseModel):
     """
-    Modelo de dados para Cartao de Credito
+    Representa um cartão de crédito vinculado a um aluno.
+
+    Campos:
+        - aluno: referência ao aluno dono do cartão.
+        - numero_cartao: número do cartão (sem espaços).
+        - nome_titular: nome do titular impresso no cartão.
+        - data_validade: validade no formato AAAA/MM.
+        - cvv: código de segurança do cartão.
+        - bandeira_cartao: bandeira do cartão (ex: Visa, Mastercard).
     """
-    aluno = models.ForeignKey(Aluno, on_delete=models.CASCADE, verbose_name="Aluno")
-    numero_cartao = models.CharField("Número do Cartão", max_length=16)
+    aluno = models.ForeignKey(
+        Aluno, on_delete=models.CASCADE, verbose_name="cartoes")
+    numero_cartao = models.CharField(
+        "Número do Cartão", max_length=16, validators=[validate_numero_cartao])
     nome_titular = models.CharField("Nome no Cartão", max_length=255)
-    data_validade = models.CharField("Data de Validade (AAAA/MM)", max_length=7)
-    cvv = models.CharField("CVV", max_length=3)
-    bandeira_cartao = models.CharField("Bandeira de Cartao", max_length=10, choices=BandeiraCartao.choices)
+    data_validade = models.CharField(
+        "Data de Validade (AAAA/MM)", max_length=7, validators=[validate_data_validade])
+    cvv = models.CharField("CVV", max_length=3, validators=[validate_cvv])
+    bandeira_cartao = models.CharField(
+        "Bandeira de Cartão", max_length=10, choices=BANDEIRA_CARTAO)
 
     class Meta:
         """
-        Verbose name para o campo aluno
+        Configurações de meta para o modelo Cartao.
         """
         db_table = 'cartoes'
         verbose_name = 'Cartão'
@@ -111,19 +92,30 @@ class Cartao(Base):
         return f"{self.nome_titular} – ****{self.numero_cartao[-4:]}"
 
 
-class Matricula(Base):
+class Matricula(BaseModel):
     """
-    Modelo de dados para Matricula
+    Representa a matrícula de um aluno em um plano da academia.
+
+    Campos:
+        - aluno: referência ao aluno matriculado.
+        - plano: plano escolhido pelo aluno.
+        - forma_pagamento: forma de pagamento da matrícula (PIX, cartão, etc.).
+        - cartao: cartão usado no pagamento (opcional, dependendo da forma).
     """
-    aluno = models.ForeignKey(Aluno, on_delete=models.CASCADE, verbose_name="Aluno")
-    plano = models.ForeignKey(Plano, on_delete=models.PROTECT, verbose_name="Plano")
-    forma_pagamento = models.CharField("Forma de Pagamento", max_length=1, choices=FormaPagamento.choices)
-    cartao = models.ForeignKey(Cartao, on_delete=models.SET_NULL, null=True, blank=True,
-                               verbose_name="Cartão", related_name="matriculas")
+    aluno = models.ForeignKey(
+        Aluno, on_delete=models.CASCADE, verbose_name="matriculas")
+    plano = models.ForeignKey(
+        Plano, on_delete=models.PROTECT, verbose_name="plano")
+    forma_pagamento = models.CharField(
+        "Forma de Pagamento", max_length=1, choices=FORMA_PAGAMENTO)
+    cartao = models.ForeignKey(
+        Cartao, on_delete=models.SET_NULL, null=True, blank=True,
+        verbose_name="Cartão", related_name="matriculas"
+    )
 
     class Meta:
         """
-        Verbose name para o campo aluno
+        Configurações de meta para o modelo Matricula.
         """
         db_table = 'matriculas'
         verbose_name = 'Matrícula'

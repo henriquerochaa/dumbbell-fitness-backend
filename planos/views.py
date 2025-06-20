@@ -1,12 +1,18 @@
+# Importa classes para views genéricas e viewsets do DRF
 from rest_framework import generics, viewsets
 
+# Importa os modelos que serão manipulados nas views
 from .models import Plano, Modalidade, PlanoModalidade
+
+# Importa os serializers responsáveis pela conversão dos dados
 from .serializers import PlanoSerializer, ModalidadeSerializer, PlanoModalidadeSerializer
 
 
 class PlanoViewSet(viewsets.ModelViewSet):
     """
-    Cria, Lista, Atualiza e Deleta os dados de plano
+    ViewSet para operações CRUD no modelo Plano.
+
+    Permite criar, listar, atualizar e deletar registros de planos.
     """
     queryset = Plano.objects.all().order_by('id')
     serializer_class = PlanoSerializer
@@ -14,15 +20,19 @@ class PlanoViewSet(viewsets.ModelViewSet):
 
 class ModalidadeViewSet(viewsets.ModelViewSet):
     """
-    Cria, Lista, Atualiza e Deleta os dados de modalidade
+    ViewSet para operações CRUD no modelo Modalidade.
+
+    Permite criar, listar, atualizar e deletar registros de modalidades.
     """
     queryset = Modalidade.objects.all().order_by('id')
     serializer_class = ModalidadeSerializer
 
+
 class PlanoModalidadeViewSet(viewsets.ModelViewSet):
     """
-    Cria, Lista, Atualiza e Deleta os dados de plano/modalidade
+    ViewSet para operações CRUD no modelo PlanoModalidade.
+
+    Permite criar, listar, atualizar e deletar registros que relacionam planos e modalidades.
     """
     queryset = PlanoModalidade.objects.all().order_by('id')
     serializer_class = PlanoModalidadeSerializer
-

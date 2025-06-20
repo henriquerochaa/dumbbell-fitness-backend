@@ -1,20 +1,20 @@
+# Imports do Django
 from django.db import models
-from base.models import Base
+
+# Import de models
+from core.models import BaseModel
+
+# Import de Choices
+from core.choices import CATEGORIA_MODALIDADES
 
 
-class Categoria(models.TextChoices):
+class Plano(BaseModel):
     """
-    Categorias disponíveis para modalidades.
-    """
-    MUSCULACAO = 'M', 'Musculação'
-    DANCA = 'D', 'Dança'
-    GINASTICA = 'G', 'Ginástica'
+    Modelo que representa um plano de treino.
 
+    Contém informações básicas como nome e valor do plano.
+    """
 
-class Plano(Base):
-    """
-    Modelo de dados para o plano.
-    """
     nome = models.CharField('Nome', max_length=255)
     valor = models.DecimalField('Valor', max_digits=8, decimal_places=2)
 
@@ -22,19 +22,26 @@ class Plano(Base):
         return self.nome
 
 
-class Modalidade(Base):
+class Modalidade(BaseModel):
     """
-    Modelo de dados para a modalidade.
+    Modelo que representa uma modalidade de exercício.
+
+    Define a categoria da modalidade com base em opções predefinidas.
     """
-    categoria = models.CharField('Categoria', max_length=255, choices=Categoria.choices)
+
+    categoria = models.CharField(
+        'Categoria', max_length=255, choices=CATEGORIA_MODALIDADES)
 
     def __str__(self):
         return self.categoria
 
 
-class PlanoModalidade(Base):
+class PlanoModalidade(BaseModel):
     """
-    Relacionamento entre plano e modalidade.
+    Modelo que representa a relação entre plano e modalidade.
+
+    Utilizado para associar um plano a uma ou mais modalidades.
     """
+
     plano = models.ForeignKey(Plano, on_delete=models.CASCADE)
     modalidade = models.ForeignKey(Modalidade, on_delete=models.CASCADE)
