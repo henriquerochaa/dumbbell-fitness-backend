@@ -1,103 +1,141 @@
+# =============================================================================
+# ARQUIVO: core/choices.py
+# DESCRIÇÃO: Choices e Enums compartilhados do projeto Dumbbell Fitness
+# FUNÇÃO: Define opções pré-definidas para campos de seleção nos modelos
+# =============================================================================
+
 from enum import Enum  # Enumeração para organizar choices com facilidade e clareza
 
 """
 Choices e Enums para uso nos models Django.
 
+Este arquivo centraliza todas as opções pré-definidas que são usadas
+em campos de seleção (choices) nos modelos do projeto.
+
 Choices disponíveis:
     - EstadoChoices: enum com todos os estados brasileiros (UFs)
-    - SEXO_USUARIO: sexo do usuário
-    - FORMA_PAGAMENTO: formas de pagamento aceitas
-    - BANDEIRA_CARTAO: bandeiras dos cartões
+    - SEXO_USUARIO: sexo do usuário (M/F/O)
+    - FORMA_PAGAMENTO: formas de pagamento aceitas (Cartão/PIX/Débito)
+    - BANDEIRA_CARTAO: bandeiras dos cartões (Mastercard/Visa/Elo)
     - CATEGORIA_MODALIDADES: tipos de modalidades esportivas
-    - OBJETIVO_TREINO: objetivos comuns em treino
+    - OBJETIVO_TREINO: objetivos comuns em treino (Hipertrofia/Força/etc.)
 """
 
 
 class EstadoChoices(Enum):
     """
     Enum para estados brasileiros (UFs), com código e nome.
-
+    
+    Esta classe enum organiza todos os estados brasileiros de forma
+    estruturada, facilitando a manutenção e uso nos modelos Django.
+    
     Método choices() para usar diretamente no parâmetro choices dos fields do Django.
     """
 
+    # Estados brasileiros organizados por região
+    # Formato: SIGLA = ('SIGLA', 'Nome Completo')
+    
+    # Região Norte
     AC = ('AC', 'Acre')
-    AL = ('AL', 'Alagoas')
     AP = ('AP', 'Amapá')
     AM = ('AM', 'Amazonas')
-    BA = ('BA', 'Bahia')
-    CE = ('CE', 'Ceará')
-    DF = ('DF', 'Distrito Federal')
-    ES = ('ES', 'Espírito Santo')
-    GO = ('GO', 'Goiás')
-    MA = ('MA', 'Maranhão')
-    MT = ('MT', 'Mato Grosso')
-    MS = ('MS', 'Mato Grosso do Sul')
-    MG = ('MG', 'Minas Gerais')
     PA = ('PA', 'Pará')
-    PB = ('PB', 'Paraíba')
-    PR = ('PR', 'Paraná')
-    PE = ('PE', 'Pernambuco')
-    PI = ('PI', 'Piauí')
-    RJ = ('RJ', 'Rio de Janeiro')
-    RN = ('RN', 'Rio Grande do Norte')
-    RS = ('RS', 'Rio Grande do Sul')
     RO = ('RO', 'Rondônia')
     RR = ('RR', 'Roraima')
-    SC = ('SC', 'Santa Catarina')
-    SP = ('SP', 'São Paulo')
-    SE = ('SE', 'Sergipe')
     TO = ('TO', 'Tocantins')
+    
+    # Região Nordeste
+    AL = ('AL', 'Alagoas')
+    BA = ('BA', 'Bahia')
+    CE = ('CE', 'Ceará')
+    MA = ('MA', 'Maranhão')
+    PB = ('PB', 'Paraíba')
+    PE = ('PE', 'Pernambuco')
+    PI = ('PI', 'Piauí')
+    RN = ('RN', 'Rio Grande do Norte')
+    SE = ('SE', 'Sergipe')
+    
+    # Região Sudeste
+    ES = ('ES', 'Espírito Santo')
+    MG = ('MG', 'Minas Gerais')
+    RJ = ('RJ', 'Rio de Janeiro')
+    SP = ('SP', 'São Paulo')
+    
+    # Região Sul
+    PR = ('PR', 'Paraná')
+    RS = ('RS', 'Rio Grande do Sul')
+    SC = ('SC', 'Santa Catarina')
+    
+    # Região Centro-Oeste
+    DF = ('DF', 'Distrito Federal')
+    GO = ('GO', 'Goiás')
+    MT = ('MT', 'Mato Grosso')
+    MS = ('MS', 'Mato Grosso do Sul')
 
     @classmethod
     def choices(cls):
         """
         Retorna lista de tuplas para uso em campos Django com choices.
-
-        Exemplo:
-            choices=EstadoChoices.choices()
+        
+        Converte o enum em formato compatível com o Django:
+        [('AC', 'Acre'), ('AL', 'Alagoas'), ...]
+        
+        Exemplo de uso:
+            estado = models.CharField(choices=EstadoChoices.choices())
         """
         return [(member.value[0], member.value[1]) for member in cls]
 
     def __str__(self):
         """
         Retorna o código do estado para fácil visualização e comparação.
+        
+        Exemplo: EstadoChoices.SP retorna 'SP'
         """
         return self.value[0]
 
 
+# =============================================================================
+# CHOICES SIMPLES (LISTAS DE TUPLAS)
+# =============================================================================
+
 # Choices para Sexo do usuário
+# Usado no modelo Aluno para definir o gênero
 SEXO_USUARIO = [
     ('M', 'Masculino'),
     ('F', 'Feminino'),
-    ('O', 'Outro'),
+    ('O', 'Outro'),  # Opção inclusiva para outros gêneros
 ]
 
 # Choices para Forma de pagamento
+# Usado no modelo Matricula para definir como o aluno vai pagar
 FORMA_PAGAMENTO = [
-    ('C', 'Cartão de Crédito'),
-    ('P', 'PIX'),
-    ('D', 'Débito'),
+    ('C', 'Cartão de Crédito'),  # Pagamento via cartão de crédito
+    ('P', 'PIX'),                # Pagamento instantâneo via PIX
+    ('D', 'Débito'),             # Pagamento via cartão de débito
 ]
 
 # Choices para Bandeiras do cartão
+# Usado no modelo Cartao para definir a bandeira do cartão
 BANDEIRA_CARTAO = [
-    ('M', 'Mastercard'),
-    ('V', 'Visa'),
-    ('E', 'Elo'),
+    ('M', 'Mastercard'),  # Cartão Mastercard
+    ('V', 'Visa'),        # Cartão Visa
+    ('E', 'Elo'),         # Cartão Elo (rede brasileira)
 ]
 
 # Choices para Categorias das modalidades
+# Usado no modelo Plano para categorizar os tipos de treino
 CATEGORIA_MODALIDADES = [
-    ('M', 'Musculação'),
-    ('D', 'Dança'),
-    ('G', 'Ginástica'),
+    ('M', 'Musculação'),  # Treinos de força e hipertrofia
+    ('D', 'Dança'),       # Aulas de dança
+    ('G', 'Ginástica'),   # Aulas de ginástica/aeróbica
 ]
 
 # Choices para Objetivos do Treino
+# Usado no modelo Treino para definir o objetivo do treino
 OBJETIVO_TREINO = [
-    ('H', 'Hipertrofia'),
-    ('F', 'Força'),
-    ('R', 'Resistência'),
-    ('E', 'Emagrecimento'),
-    ('X', 'Flexibilidade'),
+    ('H', 'Hipertrofia'),    # Aumentar massa muscular
+    ('F', 'Força'),          # Aumentar força muscular
+    ('R', 'Resistência'),    # Melhorar resistência cardiovascular
+    ('E', 'Emagrecimento'),  # Perder peso/gordura
+    ('X', 'Flexibilidade'),  # Melhorar flexibilidade/mobilidade
 ]

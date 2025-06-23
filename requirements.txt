@@ -1,21 +1,104 @@
-asgiref==3.8.1
-certifi==2025.4.26
-charset-normalizer==3.4.2
-dj-database-url==2.3.0
+# =============================================================================
+# ARQUIVO: requirements.txt
+# DESCRIÇÃO: Dependências Python do projeto Dumbbell Fitness
+# FUNÇÃO: Lista todas as bibliotecas necessárias para executar o projeto
+# =============================================================================
+
+# =============================================================================
+# DEPENDÊNCIAS PRINCIPAIS
+# =============================================================================
+
+# Framework web principal
 Django==5.2
-django-filter==25.1
+
+# Framework para criação de APIs REST
 djangorestframework==3.16.0
-gunicorn==23.0.0
-idna==3.10
-iniconfig==2.1.0
-Markdown==3.8
-packaging==25.0
-pluggy==1.6.0
+
+# =============================================================================
+# DEPENDÊNCIAS DE BANCO DE DADOS
+# =============================================================================
+
+# Driver PostgreSQL para Python
 psycopg2-binary==2.9.10
-pytest==8.3.5
+
+# Configuração de banco via URL (para deploy)
+dj-database-url==2.3.0
+
+# =============================================================================
+# DEPENDÊNCIAS DE AUTENTICAÇÃO E SEGURANÇA
+# =============================================================================
+
+# Gerenciamento de variáveis de ambiente
 python-dotenv==1.1.0
-requests==2.32.3
-sqlparse==0.5.3
-typing_extensions==4.13.2
-urllib3==2.4.0
+
+# =============================================================================
+# DEPENDÊNCIAS DE FILTRAGEM E BUSCA
+# =============================================================================
+
+# Filtros avançados para Django REST Framework
+django-filter==25.1
+
+# =============================================================================
+# DEPENDÊNCIAS DE DEPLOY E PRODUÇÃO
+# =============================================================================
+
+# Servidor WSGI para produção
+gunicorn==23.0.0
+
+# Servir arquivos estáticos em produção
 whitenoise==6.9.0
+
+# =============================================================================
+# DEPENDÊNCIAS DE DESENVOLVIMENTO E TESTE
+# =============================================================================
+
+# Framework de testes
+pytest==8.3.5
+
+# =============================================================================
+# DEPENDÊNCIAS DE UTILITÁRIOS
+# =============================================================================
+
+# Parser de URLs e requisições HTTP
+requests==2.32.3
+
+# Parser SQL
+sqlparse==0.5.3
+
+# Extensões de tipagem para Python
+typing_extensions==4.13.2
+
+# =============================================================================
+# DEPENDÊNCIAS DE SEGURANÇA E CERTIFICADOS
+# =============================================================================
+
+# Certificados SSL/TLS
+certifi==2025.4.26
+
+# Normalização de caracteres
+charset-normalizer==3.4.2
+
+# Codificação de URLs
+idna==3.10
+
+# Biblioteca de URLs
+urllib3==2.4.0
+
+# =============================================================================
+# DEPENDÊNCIAS DE CONFIGURAÇÃO
+# =============================================================================
+
+# Configuração de aplicações Django
+asgiref==3.8.1
+
+# Parser de configuração INI
+iniconfig==2.1.0
+
+# Renderização de Markdown
+Markdown==3.8
+
+# Gerenciamento de pacotes
+packaging==25.0
+
+# Framework de plugins
+pluggy==1.6.0
