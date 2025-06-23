@@ -28,7 +28,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 
 # Debug modo: True ou False conforme a variável .env (padrão True se não setada)
 # Em produção deve ser False para segurança
-DEBUG = True
+DEBUG = os.getenv('DEBUG', 'True').lower() in ['true', '1', 'yes']
 
 # Hosts permitidos — aqui tá liberado geral com '*', cuidado em produção!
 # Lista de domínios que podem acessar a aplicação
