@@ -1,5 +1,6 @@
 # Importa o módulo viewsets do DRF, que facilita criar CRUDs completos com pouco código
 from rest_framework import viewsets
+from rest_framework.permissions import AllowAny
 
 # Importa o modelo Exercicio para manipulação de dados
 from .models import Exercicio
@@ -14,7 +15,10 @@ class ExercicioViewSet(viewsets.ModelViewSet):
 
     Permite criar, listar, atualizar e deletar registros de exercícios,
     utilizando o serializer ExercicioSerializer para conversão dos dados.
+    
+    Acesso público - qualquer pessoa pode ver os exercícios disponíveis.
     """
 
     queryset = Exercicio.objects.all().order_by('id')
     serializer_class = ExercicioSerializer
+    permission_classes = [AllowAny]  # Permite acesso público aos exercícios

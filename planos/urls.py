@@ -8,7 +8,15 @@ from rest_framework.routers import DefaultRouter
 from cadastros.views import AlunoViewSet
 
 # Importa os ViewSets relacionados a planos, modalidades e suas relações
-from .views import PlanoViewSet, ModalidadeViewSet, PlanoModalidadeViewSet
+from .views import (
+    PlanoViewSet, 
+    ModalidadeViewSet, 
+    PlanoModalidadeViewSet,
+    planos_list,
+    plano_detail,
+    CustomAuthToken,
+    user_info
+)
 
 # Cria uma instância do roteador padrão
 router = DefaultRouter()
@@ -23,5 +31,16 @@ router.register('modalidades', ModalidadeViewSet, basename='modalidade')
 router.register('planomodalidades', PlanoModalidadeViewSet,
                 basename='planomodalidade')
 
-# Expõe as URLs geradas pelo router para serem incluídas no projeto principal
-urlpatterns = router.urls
+# Define as URLs específicas para as views customizadas
+urlpatterns = [
+    # Rotas para planos
+    path('', planos_list, name='planos-list'),  # Lista todos os planos (sem auth)
+    path('<int:pk>/', plano_detail, name='plano-detail'),  # Detalhes de um plano (com auth)
+    
+    # Rotas para autenticação
+    path('auth/login/', CustomAuthToken.as_view(), name='auth-login'),  # Login com token
+    path('auth/user/', user_info, name='user-info'),  # Informações do usuário logado
+    
+    # Inclui as rotas do router (ViewSets)
+    path('', include(router.urls)),
+]

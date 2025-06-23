@@ -8,7 +8,7 @@ FUNÇÃO: Guia completo de instalação, configuração e uso da API
 =============================================================================
 -->
 
-API REST para gerenciar planos, alunos, exercícios e treinos de uma academia fictícia Dumbbell Fitness.
+API REST completa para gerenciamento de academia fictícia Dumbbell Fitness, desenvolvida com Django REST Framework.
 
 <!--
 ESTRUTURA DO PROJETO:
@@ -21,7 +21,7 @@ ESTRUTURA DO PROJETO:
 
 ---
 
-## Tecnologias
+## 🚀 Tecnologias
 
 <!--
 STACK TECNOLÓGICA:
@@ -35,18 +35,19 @@ STACK TECNOLÓGICA:
 - whitenoise: Servir arquivos estáticos
 -->
 
-- Python 3.13.3
-- Django 5.2
-- Django REST Framework
-- PostgreSQL
-- dj-database-url
-- python-dotenv
-- django-filter
-- whitenoise
+- **Python 3.13.3** - Linguagem principal
+- **Django 5.2** - Framework web
+- **Django REST Framework** - API REST
+- **PostgreSQL** - Banco de dados
+- **django-cors-headers** - CORS para frontend
+- **dj-database-url** - Configuração de banco via URL
+- **python-dotenv** - Variáveis de ambiente
+- **django-filter** - Filtros avançados
+- **whitenoise** - Servir arquivos estáticos
 
 ---
 
-## Estrutura do Projeto
+## 📁 Estrutura do Projeto
 
 <!--
 APPS DO PROJETO:
@@ -57,15 +58,22 @@ APPS DO PROJETO:
 - core: Modelos base e escolhas compartilhadas
 -->
 
-- **cadastros**: gerenciamento de alunos, matrículas e cartões
-- **exercicios**: cadastro e controle dos exercícios físicos
-- **planos**: planos de treino, modalidades e relacionamentos
-- **treinos**: criação e controle dos treinos dos alunos
-- **core**: modelos base e escolhas compartilhadas
+```
+dumbbell-fitness-backend/
+├── cadastros/          # Gerenciamento de alunos, matrículas e cartões
+├── core/              # Modelos base e escolhas compartilhadas
+├── exercicios/        # Cadastro e controle dos exercícios físicos
+├── planos/            # Planos de treino, modalidades e relacionamentos
+├── treinos/           # Criação e controle dos treinos dos alunos
+├── dumbbell/          # Configurações principais do projeto
+├── manage.py          # Script de gerenciamento Django
+├── requirements.txt   # Dependências do projeto
+└── .env              # Variáveis de ambiente (não versionado)
+```
 
 ---
 
-## Configuração
+## ⚙️ Configuração
 
 <!--
 PASSO A PASSO DE CONFIGURAÇÃO:
@@ -78,12 +86,31 @@ PASSO A PASSO DE CONFIGURAÇÃO:
 7. Inicie o servidor
 -->
 
-1. Clone o repositório
-2. Crie e ative seu ambiente virtual
-3. Instale as dependências:
-4. Rode o comando "pip install -r requirements.txt"
+### 1. Clone o repositório
 
-## Crie um arquivo .env na raiz do projeto com as variáveis:
+```bash
+git clone <url-do-repositorio>
+cd dumbbell-fitness-backend
+```
+
+### 2. Crie e ative o ambiente virtual
+
+```bash
+python -m venv fit
+source fit/bin/activate  # Linux/Mac
+# ou
+fit\Scripts\activate     # Windows
+```
+
+### 3. Instale as dependências
+
+```bash
+pip install -r requirements.txt
+```
+
+### 4. Configure as variáveis de ambiente
+
+Crie um arquivo `.env` na raiz do projeto:
 
 <!--
 VARIÁVEIS DE AMBIENTE NECESSÁRIAS:
@@ -92,168 +119,305 @@ VARIÁVEIS DE AMBIENTE NECESSÁRIAS:
 - DATABASE_URL: URL de conexão com o banco PostgreSQL
 -->
 
-    SECRET_KEY=sua_chave_gerada_pelo_comando_django
+    SECRET_KEY=sua_chave_secreta_aqui
     DEBUG=True
     DATABASE_URL=postgres://usuario:senha@endereco:porta/banco
 
-## Para gerar uma SECRET_KEY segura, execute:
+**Para gerar uma SECRET_KEY segura:**
 
-<!--
-GERAÇÃO DE SECRET_KEY:
-Comando para gerar uma chave secreta segura para o Django
--->
+```bash
+python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"
+```
 
-    python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"
+### 5. Execute as migrações
 
-## Rode as migrações para criar as tabelas no banco:
+```bash
+python manage.py migrate
+```
 
-<!--
-MIGRAÇÕES:
-Cria todas as tabelas no banco de dados baseadas nos modelos Django
--->
+### 6. Crie um superusuário
 
-    python manage.py migrate
+```bash
+python manage.py createsuperuser
+```
 
-## Crie um superusuário para acessar o admin e testar:
+### 7. Inicie o servidor
 
-<!--
-SUPERUSUÁRIO:
-Cria um usuário administrador para acessar o painel admin do Django
--->
+```bash
+python manage.py runserver
+```
 
-    python manage.py createsuperuser
-
-## Rode o servidor:
-
-<!--
-SERVIDOR DE DESENVOLVIMENTO:
-Inicia o servidor Django na porta 8000
--->
-
-    python manage.py runserver
+O servidor estará disponível em: `http://localhost:8000`
 
 ---
 
-## Autenticação - Obter Token
+## 🔐 Autenticação
 
-<!--
-SISTEMA DE AUTENTICAÇÃO:
-A API usa autenticação via token. Para acessar endpoints protegidos,
-é necessário obter um token de autenticação.
--->
+A API usa autenticação via token. Para acessar endpoints protegidos, obtenha um token:
 
-    Para acessar os endpoints protegidos, obtenha um token de autenticação via:
+### Obter Token de Autenticação
 
-    Requisição para obter o token
+**Endpoint:** `POST /api/v1/planos/auth/login/`
 
-    URL: POST /api-token-auth/
+**Headers:**
 
-    Headers:
-    Content-Type: application/json
+```
+Content-Type: application/json
+```
 
-    Body JSON:
+**Body:**
 
-    {
+```json
+{
+  "username": "seu_usuario",
+  "password": "sua_senha"
+}
+```
+
+**Resposta de Sucesso (200):**
+
+```json
+{
+  "token": "seu_token_de_acesso_aqui",
+  "user": {
+    "id": 1,
     "username": "seu_usuario",
-    "password": "sua_senha"
-    }
+    "email": "usuario@email.com",
+    "first_name": "Nome",
+    "last_name": "Sobrenome"
+  }
+}
+```
 
-### Resposta sucesso (HTTP 200):
+### Usar Token nas Requisições
 
-<!--
-RESPOSTA DE AUTENTICAÇÃO:
-Retorna o token que deve ser usado nos headers das requisições
--->
+**Headers:**
 
-    {
-      "token": "seu_token_de_acesso_aqui"a
-    }
-
----
-
-## Exemplo para obter token usando Python requests
-
-<!--
-EXEMPLO PRÁTICO:
-Código Python para obter token de autenticação
--->
-
-    ```python
-    import requests
-
-    url = "http://localhost:8000/api-token-auth/"
-    data = {
-    "username": "seu_usuario",
-    "password": "sua_senha"
-    }
-
-    response = requests.post(url, json=data)
-
-    if response.status_code == 200:
-    token = response.json().get("token")
-    print("Token recebido:", token)
-    else:
-    print("Falha ao obter token:", response.status_code, response.text)
-
-    ```
+```
+Authorization: Token seu_token_aqui
+Content-Type: application/json
+```
 
 ---
 
-## Exemplo de POST para Criar um Treino
+## 📡 Endpoints da API
 
-<!--
-EXEMPLO DE USO DA API:
-Demonstra como criar um treino usando a API com autenticação
--->
+### 🔓 Endpoints Públicos (sem autenticação)
 
-    ```python
-    import requests
+#### Planos
 
-    url = "http://localhost:8000/api/v1/treinos/"
+- `GET /api/v1/planos/` - Lista todos os planos ativos
+- `GET /api/v1/planos/{id}/` - Detalhes de um plano específico
 
-    data = {
-    "objetivo": "A", # substitua conforme seu plano
-    "disponibilidade": "B",
-    "observacao": "Treino focado em força",
-    "exercicios": [
+#### Exercícios
+
+- `GET /api/v1/exercicios/` - Lista todos os exercícios
+- `GET /api/v1/exercicios/{id}/` - Detalhes de um exercício
+- `POST /api/v1/exercicios/` - Criar novo exercício
+- `PUT /api/v1/exercicios/{id}/` - Atualizar exercício
+- `DELETE /api/v1/exercicios/{id}/` - Deletar exercício
+
+### 🔒 Endpoints Protegidos (requer autenticação)
+
+#### Autenticação
+
+- `POST /api/v1/planos/auth/login/` - Login e obter token
+- `GET /api/v1/planos/auth/user/` - Informações do usuário logado
+
+#### Treinos
+
+- `GET /api/v1/treinos/` - Lista treinos do usuário logado
+- `GET /api/v1/treinos/{id}/` - Detalhes de um treino
+- `POST /api/v1/treinos/` - Criar novo treino
+- `PUT /api/v1/treinos/{id}/` - Atualizar treino
+- `DELETE /api/v1/treinos/{id}/` - Deletar treino
+
+#### Cadastros (Alunos)
+
+- `GET /api/v1/cadastros/alunos/` - Lista alunos
+- `POST /api/v1/cadastros/alunos/` - Cadastrar novo aluno
+- `GET /api/v1/cadastros/alunos/{id}/` - Detalhes do aluno
+- `PUT /api/v1/cadastros/alunos/{id}/` - Atualizar aluno
+- `DELETE /api/v1/cadastros/alunos/{id}/` - Deletar aluno
+
+---
+
+## 📊 Modelos de Dados
+
+### Plano
+
+```json
+{
+  "id": 1,
+  "titulo": "Plano Starter",
+  "preco": "109.90",
+  "descricao": "Plano ideal para iniciantes",
+  "beneficios": [
+    "Atendimento exclusivo com professores",
+    "Acesso a todas as modalidades",
+    "Acesso ilimitado à unidade"
+  ],
+  "ativo": true
+}
+```
+
+### Exercício
+
+```json
+{
+  "id": 1,
+  "nome": "Supino Reto",
+  "descricao": "Exercício para peitoral",
+  "grupo_muscular": "Peitoral",
+  "equipamento": "Barra",
+  "dificuldade": "Intermediário"
+}
+```
+
+### Treino
+
+```json
+{
+  "id": 1,
+  "objetivo": "Hipertrofia",
+  "disponibilidade": "3x por semana",
+  "observacao": "Treino focado em força",
+  "exercicios": [
     {
-    "exercicio": 1, # ID do exercício existente
-    "series": 3,
-    "repeticoes": 12,
-    "carga": 50.0,
-    "descanso": 90
-    },
-    {
-    "exercicio": 2,
-    "series": 4,
-    "repeticoes": 10,
-    "carga": 40.0,
-    "descanso": 60
+      "exercicio": 1,
+      "series": 3,
+      "repeticoes": 12,
+      "carga": 50.0,
+      "descanso": 90
     }
-    ]
-    }
+  ]
+}
+```
 
-    token = "seu_token_de_acesso_aqui"
+---
 
-    headers = {
-    "Authorization": f"Token {token}",
-    "Content-Type": "application/json"
-    }
+## 🌐 CORS
 
-    response = requests.post(url, json=data, headers=headers)
+A API está configurada para permitir requisições de qualquer origem (`CORS_ALLOW_ALL_ORIGINS = True`), ideal para desenvolvimento e demonstração acadêmica.
 
-    if response.status_code == 201:
-    print("Recurso criado com sucesso!")
-    print("Resposta:", response.json())
-    else:
-    print("Erro ao criar recurso:", response.status_code, response.text)
+---
 
-    ```
+## 🚀 Deploy
 
-<!--
-NOTAS ADICIONAIS:
-- A API está configurada para CORS, permitindo requisições do frontend
-- Todos os endpoints seguem padrões RESTful
-- Validações são feitas automaticamente pelos serializers
-- Logs são configurados para produção
--->
+O projeto está configurado para deploy no Heroku com:
+
+- `Procfile` configurado
+- `whitenoise` para arquivos estáticos
+- Configuração de banco via `DATABASE_URL`
+
+---
+
+## 📝 Exemplos de Uso
+
+### Python (requests)
+
+```python
+import requests
+
+# Obter token
+url = "http://localhost:8000/api/v1/planos/auth/login/"
+data = {"username": "admin", "password": "senha123"}
+response = requests.post(url, json=data)
+token = response.json()["token"]
+
+# Listar planos (público)
+planos = requests.get("http://localhost:8000/api/v1/planos/")
+print(planos.json())
+
+# Criar treino (protegido)
+headers = {"Authorization": f"Token {token}"}
+treino_data = {
+    "objetivo": "Hipertrofia",
+    "disponibilidade": "3x por semana",
+    "observacao": "Treino focado em força"
+}
+response = requests.post("http://localhost:8000/api/v1/treinos/",
+                        json=treino_data, headers=headers)
+```
+
+### JavaScript (fetch)
+
+```javascript
+// Obter token
+const response = await fetch(
+  "http://localhost:8000/api/v1/planos/auth/login/",
+  {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ username: "admin", password: "senha123" }),
+  }
+);
+const { token } = await response.json();
+
+// Listar exercícios (público)
+const exercicios = await fetch("http://localhost:8000/api/v1/exercicios/");
+const dados = await exercicios.json();
+
+// Criar treino (protegido)
+const treino = await fetch("http://localhost:8000/api/v1/treinos/", {
+  method: "POST",
+  headers: {
+    Authorization: `Token ${token}`,
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    objetivo: "Hipertrofia",
+    disponibilidade: "3x por semana",
+  }),
+});
+```
+
+---
+
+## 🔧 Comandos Úteis
+
+```bash
+# Criar migrações
+python manage.py makemigrations
+
+# Aplicar migrações
+python manage.py migrate
+
+# Criar superusuário
+python manage.py createsuperuser
+
+# Shell do Django
+python manage.py shell
+
+# Coletar arquivos estáticos
+python manage.py collectstatic
+
+# Testes
+python manage.py test
+```
+
+---
+
+## 📚 Documentação Adicional
+
+- **Admin Django:** `http://localhost:8000/admin/`
+- **API Browsable:** `http://localhost:8000/api/v1/`
+- **Autenticação:** `http://localhost:8000/auth/`
+
+---
+
+## 🤝 Contribuição
+
+Este projeto foi desenvolvido para fins acadêmicos. Para contribuições:
+
+1. Fork o projeto
+2. Crie uma branch para sua feature
+3. Commit suas mudanças
+4. Push para a branch
+5. Abra um Pull Request
+
+---
+
+## 📄 Licença
+
+Este projeto está sob a licença MIT. Veja o arquivo LICENSE para mais detalhes.

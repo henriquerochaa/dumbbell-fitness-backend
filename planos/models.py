@@ -15,20 +15,22 @@ class Plano(BaseModel):
     """
     Modelo que representa um plano de treino.
 
-    Contém informações básicas como nome e valor do plano.
+    Contém informações básicas como título, preço, descrição e benefícios do plano.
     """
 
-    nome = models.CharField('Nome', max_length=255)
-    valor = models.DecimalField('Valor', max_digits=8, decimal_places=2)
-    beneficios = ArrayField(
-        models.CharField(max_length=255),
-        verbose_name='Benefícios',
-        help_text='Lista de benefícios oferecidos pelo plano',
-        default=[]
-    )
+    titulo = models.CharField('Título', max_length=255)
+    preco = models.DecimalField('Preço', max_digits=8, decimal_places=2)
+    descricao = models.TextField('Descrição', blank=True)
+    beneficios = models.JSONField('Benefícios', default=list, help_text='Lista de benefícios oferecidos pelo plano')
+    ativo = models.BooleanField('Ativo', default=True)
 
     def __str__(self):
-        return self.nome
+        return self.titulo
+
+    class Meta:
+        verbose_name = 'Plano'
+        verbose_name_plural = 'Planos'
+        ordering = ['preco']
 
 
 class Modalidade(BaseModel):

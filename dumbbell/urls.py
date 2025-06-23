@@ -34,8 +34,8 @@ urlpatterns = [
     path('api/v1/exercicios/', include(exercicios_router.urls)),
     
     # Rotas para gerenciamento de planos de treino
-    # Endpoints: /api/v1/planos/
-    path('api/v1/planos/', include(planos_router.urls)),
+    # Endpoints: /api/v1/planos/, /api/v1/planos/<id>/, /api/v1/planos/auth/login/, /api/v1/planos/auth/user/
+    path('api/v1/planos/', include('planos.urls')),
     
     # Rotas para gerenciamento de treinos dos alunos
     # Endpoints: /api/v1/treinos/

@@ -9,14 +9,22 @@ from planos.models import Plano, Modalidade, PlanoModalidade
 @admin.register(Plano)
 class PlanoAdmin(admin.ModelAdmin):
     # Campos exibidos na lista de registros do admin para facilitar a visualização
-    list_display = ('id', 'nome', 'valor', 'mostrar_beneficios',
-                    'criacao', 'atualizacao', 'ativo')
+    list_display = ('id', 'titulo', 'preco', 'mostrar_beneficios',
+                    'ativo', 'criacao', 'atualizacao')
+    
+    # Campos para filtros laterais
+    list_filter = ('ativo', 'criacao', 'atualizacao')
+    
+    # Campos para busca
+    search_fields = ('titulo', 'descricao')
 
     def mostrar_beneficios(self, obj):
         """
         Exibe os benefícios do plano em formato de lista separada por vírgula.
         """
-        return ', '.join(obj.beneficios)
+        if isinstance(obj.beneficios, list):
+            return ', '.join(obj.beneficios)
+        return str(obj.beneficios)
     mostrar_beneficios.short_description = 'Benefícios'
 
 

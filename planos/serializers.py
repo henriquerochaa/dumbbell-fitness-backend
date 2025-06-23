@@ -4,20 +4,42 @@ from rest_framework import serializers
 # Importa os modelos que serão serializados
 from .models import Plano, Modalidade, PlanoModalidade
 
+# Importa o modelo User do Django
+from django.contrib.auth.models import User
+
 
 class PlanoSerializer(serializers.ModelSerializer):
     """
     Serializador para o modelo Plano.
 
-    Converte os dados do plano para JSON, incluindo nome, valor e benefícios listados.
+    Converte os dados do plano para JSON, incluindo título, preço, descrição e benefícios.
     """
     class Meta:
         model = Plano
         fields = (
             'id',
-            'nome',
-            'valor',
-            'beneficios'  # Campo ArrayField adicionado para exibir os benefícios
+            'titulo',
+            'preco',
+            'descricao',
+            'beneficios',
+            'ativo'
+        )
+
+
+class UserSerializer(serializers.ModelSerializer):
+    """
+    Serializador para o modelo User do Django.
+
+    Expõe informações básicas do usuário para a API.
+    """
+    class Meta:
+        model = User
+        fields = (
+            'id',
+            'username',
+            'email',
+            'first_name',
+            'last_name'
         )
 
 
