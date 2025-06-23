@@ -20,30 +20,39 @@ from core.validators import validate_aluno_matricula_unica, validate_forma_pagam
 
 
 class AlunoSerializer(serializers.ModelSerializer):
-    """
-    Dados completos do aluno, com usuário embutido.
-
-    Cria o user junto, gerencia atualização dos dois.
-    """
+    password = serializers.CharField(write_only=True, required=True)
 
     class Meta:
         model = Aluno
         fields = ['id', 'nome', 'cpf', 'email', 'sexo', 'data_nascimento', 'endereco',
-                  'peso', 'altura', 'user']
+                  'peso', 'altura', 'password']
         extra_kwargs = {
+            'password': {'write_only': True},
             'email': {'write_only': True},
-            'cpf': {'write_only': True}
+            'cpf': {'write_only': True},
         }
 
     def create(self, validated_data):
         """Cria user e aluno ligados."""
-        user_data = validated_data.pop('user')
-        user = BaseUserSerializer.create(
-            BaseUserSerializer(), validated_data=user_data)
-        aluno = Aluno.objects.create(**validated_data)
-        aluno.user = user
-        aluno.save()
+        senha = validated_data.pop('password')
+        email = validated_data.get('email')
+        nome = validated_data.get('nome')
+        cpf = validated_data.get('cpf')
+
+        user = User.objects.create_user(
+        username=email,
+        email=email,
+        password=senha,
+        first_name=nome
+        )
+        aluno = Aluno.objects.create(user=user, **validated_data)
+
+        # Criar token padrão DRF para esse user
+        token, created = Token.objects.get_or_create(user=user)
+        self._token = token.key
+
         return aluno
+
 
     def update(self, instance, validated_data):
         """Atualiza user embutido e dados do aluno."""

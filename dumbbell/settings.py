@@ -12,7 +12,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # Debug modo: True ou False conforme a variável .env (padrão True se não setada)
-DEBUG = os.getenv('DEBUG', 'False') == 'True'
+DEBUG = True
 
 # Hosts permitidos — aqui tá liberado geral com '*', cuidado em produção!
 ALLOWED_HOSTS = ['*']
@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',       # Sistema de mensagens
     'django.contrib.staticfiles',    # Gerenciamento de arquivos estáticos
     'django_filters',                # Filtros para Django REST Framework
+    'corsheaders',                   # CORS para permitir requisições de outros domínios
     'rest_framework',                # DRF — API REST
     'rest_framework.authtoken',      # Autenticação por token no DRF
     'core',                         # App custom do projeto
@@ -37,6 +38,7 @@ INSTALLED_APPS = [
 
 # Middleware — camadas que processam requests/responses
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',  # Middleware CORS
     'django.middleware.security.SecurityMiddleware',         # Segurança básica
     # Serve arquivos estáticos em produção
     'whitenoise.middleware.WhiteNoiseMiddleware',
@@ -132,3 +134,7 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.DjangoModelPermissions',
     )
 }
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+]

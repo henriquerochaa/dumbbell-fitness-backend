@@ -1,4 +1,5 @@
 from rest_framework import viewsets, mixins, serializers, status
+from rest_framework.mixins import UpdateModelMixin
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.exceptions import PermissionDenied
@@ -7,7 +8,7 @@ from .models import Aluno, Matricula, Cartao
 from .serializers import AlunoSerializer, MatriculaSerializer, CartaoSerializer
 
 
-class AlunoViewSet(viewsets.ModelViewSet):
+class AlunoViewSet(viewsets.ModelViewSet, UpdateModelMixin):
     """
     ViewSet completo para o recurso Aluno.
 

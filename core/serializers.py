@@ -42,7 +42,7 @@ class BaseUserSerializer(serializers.ModelSerializer):
 class EnderecoSerializer(serializers.ModelSerializer):
     class Meta:
         model = EnderecoModel
-        fields = '__all__'
+        fields = ['cep', 'rua', 'numero', 'complemento', 'bairro', 'cidade', 'estado']
         extra_kwargs = {
             'id': {'read_only': True},
         }
