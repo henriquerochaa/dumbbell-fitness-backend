@@ -250,7 +250,7 @@ Content-Type: application/json
 {
   "id": 1,
   "titulo": "Plano Starter",
-  "preco": "109.90",
+  "preco": "99.90",
   "descricao": "Plano ideal para iniciantes",
   "beneficios": [
     "Atendimento exclusivo com professores",
