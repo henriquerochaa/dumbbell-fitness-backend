@@ -20,7 +20,7 @@ class Treino(BaseModel):
     aluno = models.ForeignKey(
         Aluno, on_delete=models.CASCADE, verbose_name='Aluno')
     objetivo = models.CharField(
-        "Objetivo", max_length=1, choices=OBJETIVO_TREINO)
+        "Objetivo", max_length=15, choices=OBJETIVO_TREINO)
     disponibilidade = models.CharField("Disponibilidade", max_length=1)
     observacao = models.TextField("Observações", blank=True)
 

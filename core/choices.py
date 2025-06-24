@@ -133,11 +133,11 @@ CATEGORIA_MODALIDADES = [
 # Choices para Objetivos do Treino
 # Usado no modelo Treino para definir o objetivo do treino
 OBJETIVO_TREINO = [
-    ('H', 'Hipertrofia'),    # Aumentar massa muscular
-    ('F', 'Força'),          # Aumentar força muscular
-    ('R', 'Resistência'),    # Melhorar resistência cardiovascular
-    ('E', 'Emagrecimento'),  # Perder peso/gordura
-    ('X', 'Flexibilidade'),  # Melhorar flexibilidade/mobilidade
+    ('Hipertrofia', 'Hipertrofia'),    # Aumentar massa muscular
+    ('Força', 'Força'),          # Aumentar força muscular
+    ('Resistência', 'Resistência'),    # Melhorar resistência cardiovascular
+    ('Emagrecimento', 'Emagrecimento'),  # Perder peso/gordura
+    ('Flexibilidade', 'Flexibilidade'),  # Melhorar flexibilidade/mobilidade
 ]
 
 GRUPO_MUSCULAR = [
