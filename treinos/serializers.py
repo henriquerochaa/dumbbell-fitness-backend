@@ -177,7 +177,18 @@ class TreinoSerializer(serializers.ModelSerializer):
                         print(f"❌ Exercício com ID {exercicio_id} não existe")
                         raise serializers.ValidationError(f"Exercício com ID {exercicio_id} não existe")
                     
-                    ExercicioTreino.objects.create(treino=treino, **ex_data)
+                    # Buscar o objeto Exercicio
+                    exercicio_obj = Exercicio.objects.get(id=exercicio_id)
+                    
+                    # Criar ExercicioTreino com o objeto Exercicio
+                    ExercicioTreino.objects.create(
+                        treino=treino,
+                        exercicio=exercicio_obj,
+                        series=ex_data.get('series'),
+                        repeticoes=ex_data.get('repeticoes'),
+                        carga=ex_data.get('carga'),
+                        descanso=ex_data.get('descanso')
+                    )
                     print(f"✅ Exercício {i+1} criado com sucesso")
                 except Exception as ex_error:
                     print(f"❌ Erro ao criar exercício {i+1}: {ex_error}")
@@ -260,7 +271,7 @@ class TreinoSerializer(serializers.ModelSerializer):
                         
                         # Preparar dados do exercício
                         exercicio_data = {
-                            'exercicio': exercicio_id,
+                            'exercicio': Exercicio.objects.get(id=exercicio_id),
                             'series': ex_data.get('series'),
                             'repeticoes': ex_data.get('repeticoes'),
                             'carga': ex_data.get('carga'),
