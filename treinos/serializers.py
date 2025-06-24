@@ -2,7 +2,7 @@ from rest_framework import serializers
 from .models import Treino, ExercicioTreino
 from exercicios.models import Exercicio
 from cadastros.models import Matricula
-from core.choices import DISPONIBILIDADE_TREINO, OBJETIVO_TREINO
+from core.choices import OBJETIVO_TREINO
 
 
 class ExercicioTreinoSerializer(serializers.ModelSerializer):
@@ -38,21 +38,12 @@ class TreinoSerializer(serializers.ModelSerializer):
             'nome',
             'aluno',
             'objetivo',
-            'disponibilidade',
             'observacao',
             'peso',
             'altura',
             'exercicios',
         )
-        read_only_fields = ('peso', 'altura')
-
-    def validate_disponibilidade(self, value):
-        valid = [choice[0] for choice in DISPONIBILIDADE_TREINO]
-        if value not in valid:
-            raise serializers.ValidationError(
-                f"Disponibilidade inválida. Use um dos valores: {', '.join(valid)}"
-            )
-        return value
+        read_only_fields = ('peso', 'altura', 'aluno')
 
     def validate_objetivo(self, value):
         valid = [choice[0] for choice in OBJETIVO_TREINO]
@@ -220,12 +211,6 @@ class TreinoSerializer(serializers.ModelSerializer):
         for key, value in validated_data.items():
             print(f"🔍 Campo '{key}': '{value}' (tipo: {type(value)})")
         
-        # Debug: printar valor de disponibilidade recebido
-        if 'disponibilidade' in validated_data:
-            print(f"🟡 Valor recebido para disponibilidade: '{validated_data['disponibilidade']}' (type: {type(validated_data['disponibilidade'])})")
-        else:
-            print("🟡 Nenhum valor de disponibilidade recebido no update.")
-
         try:
             # Validar campo nome
             if 'nome' in validated_data:

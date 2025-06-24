@@ -1,9 +1,11 @@
 from rest_framework import viewsets, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.exceptions import ValidationError
 
 from .models import Treino
 from .serializers import TreinoSerializer
+from cadastros.models import Aluno
 
 
 class TreinoViewSet(viewsets.ModelViewSet):
@@ -28,7 +30,11 @@ class TreinoViewSet(viewsets.ModelViewSet):
         """
         Associa o treino ao aluno do usuário autenticado no momento da criação.
         """
-        serializer.save(aluno=self.request.user.aluno)
+        try:
+            aluno = Aluno.objects.get(user=self.request.user)
+            serializer.save(aluno=aluno)
+        except Aluno.DoesNotExist:
+            raise ValidationError("Usuário não possui aluno associado.")
 
     def list(self, request, *args, **kwargs):
         """

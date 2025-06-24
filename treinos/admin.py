@@ -8,8 +8,7 @@ from .models import Treino
 @admin.register(Treino)
 class TreinoAdmin(admin.ModelAdmin):
     # Define os campos exibidos na listagem do admin para facilitar a visualização
-    list_display = ('aluno', 'objetivo', 'disponibilidade',
-                    'criacao', 'atualizacao', 'ativo')
+    list_display = ('aluno', 'objetivo', 'criacao', 'atualizacao', 'ativo')
 
     # Métodos para mostrar peso e altura do aluno no admin, se quiser adicionar depois
     def peso(self, obj):
