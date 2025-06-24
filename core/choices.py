@@ -140,6 +140,14 @@ OBJETIVO_TREINO = [
     ('Flexibilidade', 'Flexibilidade'),  # Melhorar flexibilidade/mobilidade
 ]
 
+# Choices para Disponibilidade do Treino
+# Usado no modelo Treino para definir a frequência do treino
+DISPONIBILIDADE_TREINO = [
+    ('Diário', 'Diário'),        # Treino todos os dias
+    ('Alternado', 'Alternado'),  # Treino em dias alternados
+    ('Semanal', 'Semanal'),      # Treino uma vez por semana
+]
+
 GRUPO_MUSCULAR = [
     ('Biceps', 'Biceps'),
     ('Triceps', 'Triceps'),

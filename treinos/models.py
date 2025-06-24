@@ -7,21 +7,22 @@ from cadastros.models import Aluno
 from exercicios.models import Exercicio
 
 # Importa escolhas predefinidas para campo de objetivo do treino
-from core.choices import OBJETIVO_TREINO
+from core.choices import OBJETIVO_TREINO, DISPONIBILIDADE_TREINO
 
 
 class Treino(BaseModel):
     """
     Representa um treino associado a um aluno.
 
-    Contém informações sobre objetivo, disponibilidade e observações do treino.
+    Contém informações sobre nome, objetivo, disponibilidade e observações do treino.
     Propriedades calculadas para peso e altura do aluno vinculado.
     """
+    nome = models.CharField("Nome da Rotina", max_length=100, default="Nova Rotina")
     aluno = models.ForeignKey(
         Aluno, on_delete=models.CASCADE, verbose_name='Aluno')
     objetivo = models.CharField(
-        "Objetivo", max_length=15, choices=OBJETIVO_TREINO)
-    disponibilidade = models.CharField("Disponibilidade", max_length=1)
+        "Objetivo", max_length=20, choices=OBJETIVO_TREINO)
+    disponibilidade = models.CharField("Disponibilidade", max_length=20, choices=DISPONIBILIDADE_TREINO)
     observacao = models.TextField("Observações", blank=True)
 
     @property
