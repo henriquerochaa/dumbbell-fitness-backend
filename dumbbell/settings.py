@@ -110,7 +110,8 @@ WSGI_APPLICATION = 'dumbbell.wsgi.application'
 # CONFIGURAÇÃO DO BANCO DE DADOS
 # =============================================================================
 
-# Configuração do banco de dados via URL no .env, com conexão persistente e SSL
+# Para opções extras (sslmode, connect_timeout), adicione na URL do .env:
+# Exemplo: DATABASE_URL=postgres://user:pass@host:5432/dbname?sslmode=require&connect_timeout=10
 DATABASES = {
     'default': dj_database_url.config(
         default=os.getenv('DATABASE_URL'),  # URL do banco no .env
@@ -118,6 +119,17 @@ DATABASES = {
         ssl_require=True,                   # Exige conexão segura (SSL)
     )
 }
+
+# Configuração alternativa para problemas de SSL
+# Descomente as linhas abaixo se o problema persistir
+# DATABASE_URL=postgres://user:pass@host:5432/dbname?sslmode=disable&connect_timeout=15
+# DATABASES = {
+#     'default': dj_database_url.config(
+#         default=os.getenv('DATABASE_URL'),
+#         conn_max_age=300,                  # Reduz tempo de conexão para 5 minutos
+#         ssl_require=False,                 # Desabilita SSL temporariamente
+#     )
+# }
 
 # =============================================================================
 # VALIDAÇÃO DE SENHAS

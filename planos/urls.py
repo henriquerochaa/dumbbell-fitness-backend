@@ -33,14 +33,14 @@ router.register('planomodalidades', PlanoModalidadeViewSet,
 
 # Define as URLs específicas para as views customizadas
 urlpatterns = [
-    # Rotas para planos
-    path('', planos_list, name='planos-list'),  # Lista todos os planos (sem auth)
-    path('<int:pk>/', plano_detail, name='plano-detail'),  # Detalhes de um plano (com auth)
-    
     # Rotas para autenticação
     path('auth/login/', CustomAuthToken.as_view(), name='auth-login'),  # Login com token
     path('auth/user/', user_info, name='user-info'),  # Informações do usuário logado
     
-    # Inclui as rotas do router (ViewSets)
+    # Rotas customizadas para planos (mais específicas)
+    path('list/', planos_list, name='planos-list'),  # Lista todos os planos (sem auth)
+    path('detail/<int:pk>/', plano_detail, name='plano-detail'),  # Detalhes de um plano (com auth)
+    
+    # Inclui as rotas do router (ViewSets) - deve vir por último
     path('', include(router.urls)),
 ]

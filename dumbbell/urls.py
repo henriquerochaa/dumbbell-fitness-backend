@@ -12,12 +12,35 @@ from django.urls import path, include
 # Esta view permite obter um token de autenticação usando username e password
 from rest_framework.authtoken.views import obtain_auth_token
 
+# Importações para autenticação customizada
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from django.contrib.auth.models import User
+from planos.serializers import UserSerializer
+
 # Importa os routers de cada app (que já têm as rotas registradas)
 # Cada router contém as URLs específicas de cada funcionalidade
 from cadastros.urls import router as cadastros_router
 from exercicios.urls import router as exercicios_router
 from planos.urls import router as planos_router
 from treinos.urls import router as treinos_router
+
+# =============================================================================
+# VIEWS DE AUTENTICAÇÃO CENTRALIZADAS
+# =============================================================================
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def auth_user_info(request):
+    """
+    View para retornar informações do usuário logado.
+    
+    Endpoint: GET /api/v1/auth/user/
+    Requer autenticação e retorna dados do usuário atual.
+    """
+    serializer = UserSerializer(request.user)
+    return Response(serializer.data)
 
 # Lista principal de padrões de URL do projeto
 urlpatterns = [
@@ -40,6 +63,17 @@ urlpatterns = [
     # Rotas para gerenciamento de treinos dos alunos
     # Endpoints: /api/v1/treinos/
     path('api/v1/treinos/', include(treinos_router.urls)),
+
+    # =====================================================================
+    # ROTAS DE AUTENTICAÇÃO CENTRALIZADAS
+    # =====================================================================
+    
+    # Endpoint para obter informações do usuário autenticado
+    # Método: GET
+    # Headers: Authorization: Token seu_token_aqui
+    # Retorna: Dados do usuário logado
+    # Acesso: /api/v1/auth/user/
+    path('api/v1/auth/user/', auth_user_info, name='auth-user-info'),
 
     # =====================================================================
     # ROTAS ADMINISTRATIVAS

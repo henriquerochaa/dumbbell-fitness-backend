@@ -117,17 +117,17 @@ FORMA_PAGAMENTO = [
 # Choices para Bandeiras do cartão
 # Usado no modelo Cartao para definir a bandeira do cartão
 BANDEIRA_CARTAO = [
-    ('M', 'Mastercard'),  # Cartão Mastercard
-    ('V', 'Visa'),        # Cartão Visa
-    ('E', 'Elo'),         # Cartão Elo (rede brasileira)
+    ('Mastercard', 'Mastercard'),  # Cartão Mastercard
+    ('Visa', 'Visa'),            # Cartão Visa
+    ('Elo', 'Elo'),              # Cartão Elo (rede brasileira)
 ]
 
 # Choices para Categorias das modalidades
 # Usado no modelo Plano para categorizar os tipos de treino
 CATEGORIA_MODALIDADES = [
-    ('M', 'Musculação'),  # Treinos de força e hipertrofia
-    ('D', 'Dança'),       # Aulas de dança
-    ('G', 'Ginástica'),   # Aulas de ginástica/aeróbica
+    ('Musculacao', 'Musculação'),  # Treinos de força e hipertrofia
+    ('Dança', 'Dança'),       # Aulas de dança
+    ('Ginastica', 'Ginástica'),   # Aulas de ginástica/aeróbica
 ]
 
 # Choices para Objetivos do Treino
@@ -138,4 +138,19 @@ OBJETIVO_TREINO = [
     ('R', 'Resistência'),    # Melhorar resistência cardiovascular
     ('E', 'Emagrecimento'),  # Perder peso/gordura
     ('X', 'Flexibilidade'),  # Melhorar flexibilidade/mobilidade
+]
+
+GRUPO_MUSCULAR = [
+    ('Biceps', 'Biceps'),
+    ('Triceps', 'Triceps'),
+    ('Peito', 'Peito'),
+    ('Costas', 'Costas'),
+    ('Ombro', 'Ombro'),
+    ('Glúteos', 'Glúteos'),
+    ('Panturrilha', 'Panturrilha'),
+    ('Quadríceps', 'Quadríceps'),
+    ('Abdominal', 'Abdominal'),
+    ('Lombar', 'Lombar'),
+    ('Trapézio', 'Trapézio'),
+    ('Outros', 'Outros'),
 ]

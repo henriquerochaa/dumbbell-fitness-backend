@@ -55,17 +55,17 @@ class TreinoSerializer(serializers.ModelSerializer):
         aluno = validated_data.get('aluno')
 
         # Verifica se o aluno possui matrícula ativa
-        matricula = Matricula.objects.filter(aluno=aluno).first()
+        matricula = Matricula.objects.filter(aluno=aluno, ativo=True).first()
         if not matricula:
             raise serializers.ValidationError(
                 "Aluno não possui matrícula ativa.")
 
         # Verifica se a matrícula possui um plano válido
-        if not matricula.plano or not matricula.plano.nome:
+        if not matricula.plano or not matricula.plano.titulo:
             raise serializers.ValidationError(
                 "Matrícula não tem plano válido.")
 
-        plano_nome = matricula.plano.nome.lower()
+        plano_titulo = matricula.plano.titulo.lower()
 
         # Define limites de treinos por plano
         limites = {
@@ -73,13 +73,13 @@ class TreinoSerializer(serializers.ModelSerializer):
             'dumbbell': 9999,  # ilimitado
         }
         # padrão bloqueia caso plano desconhecido
-        limite = limites.get(plano_nome, 0)
+        limite = limites.get(plano_titulo, 0)
 
         # Conta os treinos existentes do aluno
-        treinos_count = Treino.objects.filter(aluno=aluno).count()
+        treinos_count = Treino.objects.filter(aluno=aluno, ativo=True).count()
         if treinos_count >= limite:
             raise serializers.ValidationError(
-                f"Você atingiu o limite de {limite} treinos para o seu plano '{plano_nome}'."
+                f"Você atingiu o limite de {limite} treinos para o seu plano '{plano_titulo}'."
             )
 
         # Cria o treino

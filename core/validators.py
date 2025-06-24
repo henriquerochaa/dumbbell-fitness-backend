@@ -230,6 +230,7 @@ def validate_aluno_matricula_unica(data, instance=None):
     
     Impede que um aluno tenha mais de uma matrícula ativa no sistema.
     Ignora a própria instância caso seja um update (edição).
+    Considera apenas matrículas com campo 'ativo=True'.
     
     Args:
         data (dict): Dados da matrícula contendo o aluno.
@@ -254,8 +255,8 @@ def validate_aluno_matricula_unica(data, instance=None):
     
     aluno = data.get('aluno')
     if aluno:
-        # Busca matrículas ativas do aluno
-        qs = Matricula.objects.filter(aluno=aluno)
+        # Busca apenas matrículas ativas do aluno
+        qs = Matricula.objects.filter(aluno=aluno, ativo=True)
         
         # Se for um update, exclui a própria instância da busca
         if instance:

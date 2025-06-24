@@ -162,4 +162,4 @@ class Matricula(BaseModel):
         Retorna uma descrição clara da matrícula incluindo
         nome do aluno e plano escolhido.
         """
-        return f"Matrícula de {self.aluno.nome} no plano {self.plano.nome}"
+        return f"Matrícula de {self.aluno.nome} no plano {self.plano.titulo}"

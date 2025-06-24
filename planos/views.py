@@ -15,6 +15,9 @@ from .serializers import PlanoSerializer, ModalidadeSerializer, PlanoModalidadeS
 # Importa o modelo User do Django
 from django.contrib.auth.models import User
 
+# Importa o modelo Matricula para remover referências
+from cadastros.models import Matricula
+
 
 @api_view(['GET'])
 @permission_classes([AllowAny])
@@ -89,6 +92,54 @@ class PlanoViewSet(viewsets.ModelViewSet):
     """
     queryset = Plano.objects.all().order_by('id')
     serializer_class = PlanoSerializer
+    permission_classes = [IsAuthenticated]  # Adiciona autenticação obrigatória
+
+    def destroy(self, request, *args, **kwargs):
+        """
+        Sobrescreve o método destroy para remover matrículas relacionadas
+        antes de deletar o plano.
+        
+        Isso evita o erro ProtectedError quando o plano está sendo usado
+        em matrículas.
+        """
+        plano = self.get_object()
+        
+        try:
+            # Remove todas as matrículas relacionadas ao plano
+            matriculas = Matricula.objects.filter(plano=plano)
+            count_matriculas = matriculas.count()
+            
+            if count_matriculas > 0:
+                matriculas.delete()
+                print(f"Removidas {count_matriculas} matrículas do plano '{plano.titulo}'")
+            
+            # Remove relacionamentos PlanoModalidade
+            plano_modalidades = PlanoModalidade.objects.filter(plano=plano)
+            count_modalidades = plano_modalidades.count()
+            
+            if count_modalidades > 0:
+                plano_modalidades.delete()
+                print(f"Removidas {count_modalidades} relações de modalidade do plano '{plano.titulo}'")
+            
+            # Agora pode deletar o plano com segurança
+            self.perform_destroy(plano)
+            
+            return Response(
+                {
+                    'message': f'Plano "{plano.titulo}" deletado com sucesso.',
+                    'matriculas_removidas': count_matriculas,
+                    'modalidades_removidas': count_modalidades
+                },
+                status=status.HTTP_200_OK
+            )
+            
+        except Exception as e:
+            return Response(
+                {
+                    'error': f'Erro ao deletar plano: {str(e)}'
+                },
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
 
 class ModalidadeViewSet(viewsets.ModelViewSet):

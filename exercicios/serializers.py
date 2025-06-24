@@ -17,5 +17,7 @@ class ExercicioSerializer(serializers.ModelSerializer):
             'id',
             'nome',
             'descricao',
-            'equipamento'
+            'equipamento',
+            'grupo_muscular',
+            'categoria',
         )

@@ -7,6 +7,9 @@ from core.models import BaseModel
 # Importa opções predefinidas para categorias de modalidades de exercícios
 from core.choices import CATEGORIA_MODALIDADES
 
+# Importa opções predefinidas para grupos musculares
+from core.choices import GRUPO_MUSCULAR
+
 
 class Exercicio(BaseModel):
     """
@@ -23,6 +26,8 @@ class Exercicio(BaseModel):
     descricao = models.TextField("Descrição")
     categoria = models.CharField(
         "Categoria", max_length=30, choices=CATEGORIA_MODALIDADES)
+    grupo_muscular = models.CharField(
+        "Grupo Muscular", max_length=30, choices=GRUPO_MUSCULAR, default='Outros')
     equipamento = models.CharField(
         "Equipamento", max_length=255, blank=True, null=True)
 

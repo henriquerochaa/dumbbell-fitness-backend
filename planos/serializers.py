@@ -20,7 +20,6 @@ class PlanoSerializer(serializers.ModelSerializer):
             'id',
             'titulo',
             'preco',
-            'descricao',
             'beneficios',
             'ativo'
         )
